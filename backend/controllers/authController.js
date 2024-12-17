@@ -2,6 +2,8 @@ import catchAsyncErrors from "../middlewares/catchAsyncError.js";
 import userModel from "../models/userModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import sendTokenToUser from "../utils/sendTokenToUser.js";
+import { getResetPasswordTemplate } from "../utils/emailTemplate.js";
+import sendEmail from "../utils/sendEmail.js";
 
 
 
@@ -67,7 +69,7 @@ export const loginUser = catchAsyncErrors(
 
 
 
-
+// logout -> api/v1/logout
 export const logout = catchAsyncErrors(
 
     (req, res, next) => {
@@ -83,3 +85,66 @@ export const logout = catchAsyncErrors(
     }
     
 )
+
+
+
+
+
+
+
+
+
+
+
+// forgot password -> api/v1/password/forgot
+export const forgotPassword = catchAsyncErrors(
+
+    async (req, res, next) => {
+
+        // find user based on the email
+        const user = await userModel.findOne({ email : req.body.email });
+
+        // if user not present in the database
+        if(!user) {
+            return next(new ErrorHandler("User not found with this email", 404));
+        }
+
+        // get reset password token
+        const resetToken = user.getResetPasswordToken();
+
+        // save the hashed reset token and expiry time in the database
+        await user.save(); 
+
+        // create reset password url
+        const resetUrl = `${process.env.FRONTEND_URL}/api/v1/password/reset/${resetToken}`;
+
+        // message generate form email template
+        const message = getResetPasswordTemplate(user?.name, resetUrl);
+
+        
+        try {
+            // finally, send the mail to the user
+            await sendEmail({
+                email : user.email,
+                subject : "ShopCart Password Recovery",
+                message,
+            });
+            
+            // if successfully sent mail
+            res.status(200).json({
+                message : `Email sent to ${user.email}`,
+            })
+        }
+        catch(error) {
+            // if any error occurs during sending email, update the reset values in the databse
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+            
+            await user.save(); 
+            return next(new ErrorHandler(error?.message, 500));
+        }
+
+              
+    }
+ 
+);

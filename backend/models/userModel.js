@@ -88,6 +88,9 @@ userSchema.methods.getResetPasswordToken = function() {
     // store the hashed reset token in user's resetPasswordToken property in database
     this.resetPasswordToken = hashedResetToken;
 
+    // set the expiry time for reset token
+    this.resetPasswordExpire = Date.now() + 30*60*1000;
+
     // finally return the resetToken
     return resetToken;
 }
