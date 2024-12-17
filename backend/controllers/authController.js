@@ -4,6 +4,7 @@ import ErrorHandler from "../utils/errorHandler.js";
 import sendTokenToUser from "../utils/sendTokenToUser.js";
 import { getResetPasswordTemplate } from "../utils/emailTemplate.js";
 import sendEmail from "../utils/sendEmail.js";
+import crypto from "crypto";
 
 
 
@@ -88,14 +89,6 @@ export const logout = catchAsyncErrors(
 
 
 
-
-
-
-
-
-
-
-
 // forgot password -> api/v1/password/forgot
 export const forgotPassword = catchAsyncErrors(
 
@@ -142,9 +135,52 @@ export const forgotPassword = catchAsyncErrors(
             
             await user.save(); 
             return next(new ErrorHandler(error?.message, 500));
+        }  
+    }
+);
+
+
+
+
+// reset password -> /api/v1/password/reset/:token
+export const resetPassword = catchAsyncErrors(
+
+    async (req, res, next) => {
+
+        // get the reset token from the req params of the url
+        const resetPasswordToken = req?.params?.token;
+
+        // hash the reset token
+        const hashedResetPasswordToken = crypto.createHash('sha256').update(resetPasswordToken).digest('hex');
+
+        // find the user with the matching hashedResetPasswordToken and resetPasswordExpire (should be greater than current time)
+        const user = await userModel.findOne({ 
+            resetPasswordToken : hashedResetPasswordToken,
+            resetPasswordExpire : { $gt : Date.now() },
+        });
+
+        // if no user is found, return the message to the user
+        if(!user) {
+            return next(new ErrorHandler("Reset Password Token is either invalid or has been expired", 400));
         }
 
-              
+        // if user is found then, first check if the password is same as confirm password
+        if(req.body.password != req.body.confirmPassword) {
+            return next(new ErrorHandler("Passwords do not match", 400));
+        }
+
+        // update the password
+        user.password = req.body.password;
+
+        // update the reset password token and reset expiry date after resetting the password
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        // update the user in the database 
+        await user.save();
+        
+        // send the new jwt token to the user
+        sendTokenToUser(user, 200, res);
     }
- 
-);
+
+)
