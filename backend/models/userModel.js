@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const userSchema = mongoose.Schema({
 
@@ -76,9 +77,23 @@ userSchema.methods.comparePassword = async function(enteredPassword) {
 }
 
 
+// generate password reset token 
+userSchema.methods.getResetPasswordToken = function() {
+    // generate unique token for password reset
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+    // hash the generated password reset token
+    const hashedResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+
+    // store the hashed reset token in user's resetPasswordToken property in database
+    this.resetPasswordToken = hashedResetToken;
+
+    // finally return the resetToken
+    return resetToken;
+}
 
 
-
+// export the user model created based on user schema
 const userModel = mongoose.model("User", userSchema);
 export default userModel;
 
