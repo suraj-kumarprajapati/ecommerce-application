@@ -243,3 +243,33 @@ export const updatePassword = catchAsyncErrors(
         });        
     }
 );
+
+
+
+
+
+
+// get user profile -> /api/v1/me/update
+export const updateProfile = catchAsyncErrors(
+    async (req, res, next) => {
+
+        // if new values not found
+        if(!req.body.name || !req.body.email) {
+            return next(new ErrorHandler("please enter name and email", 400));
+        }
+
+        // prepare the user data before udating
+        const newUserData = {
+            name : req.body?.name,
+            email : req.body?.email,
+        }
+
+        // update the user info. in the database
+        const updatedUser = await userModel.findByIdAndUpdate(req.user._id, newUserData, {new : true});
+
+        // send the response to the user along with updated values
+        res.status(200).json({
+            updatedUser,
+        });
+    }
+);

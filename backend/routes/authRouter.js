@@ -2,7 +2,7 @@
 
 
 import express from "express";
-import { loginUser, logout, registerUser, forgotPassword, resetPassword, getUserProfile, updatePassword } from "../controllers/authController.js";
+import { loginUser, logout, registerUser, forgotPassword, resetPassword, getUserProfile, updatePassword, updateProfile } from "../controllers/authController.js";
 import { isUserAuthenticated } from "../middlewares/authMiddleware.js";
 
 
@@ -18,7 +18,9 @@ authRouter.route('/password/reset/:token').put(resetPassword);
 
 // user's routes
 authRouter.route('/me').get(isUserAuthenticated , getUserProfile);
-authRouter.route('/password/update').post(isUserAuthenticated, updatePassword);
+authRouter.route('/me/update').put(isUserAuthenticated, updateProfile);
+authRouter.route('/password/update').put(isUserAuthenticated, updatePassword);
+
 
 
 export default authRouter; 
