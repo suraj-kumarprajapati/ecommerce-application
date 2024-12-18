@@ -8,6 +8,10 @@ import crypto from "crypto";
 
 
 
+/**
+ *  Authentication and Authorisation
+ */
+
 
 // register new user -> api/v1/register
 export const registerUser = catchAsyncErrors(
@@ -190,6 +194,12 @@ export const resetPassword = catchAsyncErrors(
 
 
 
+/**
+ *  
+ * User routes
+ * 
+ */
+
 
 
 
@@ -273,3 +283,47 @@ export const updateProfile = catchAsyncErrors(
         });
     }
 );
+
+
+
+
+
+
+/**
+ *  Admin Routes
+ */
+
+
+
+// get all users (admin route) :-    /api/v1/admin/users
+export const getAllUsers = catchAsyncErrors(
+    async (req, res, next) => {
+        // get all users from the database
+        const users = await userModel.find();
+
+        // send the response to the admin
+        res.status(200).json({
+            users,
+        });
+    }
+)
+
+
+
+// get user details (admin route) :-    /api/v1/admin/users/:id
+export const getUserDetails = catchAsyncErrors(
+    async (req, res, next) => {
+        // get all users from the database
+        const user = await userModel.findById(req.params.id);
+
+        // if user not found
+        if(!user) {
+            return next(new ErrorHandler(`User not found with the id : ${req.params.id}`, 404));
+        }
+
+        // send the response to the admin
+        res.status(200).json({
+            user,
+        });
+    }
+)
