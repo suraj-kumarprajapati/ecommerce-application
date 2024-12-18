@@ -85,7 +85,7 @@ export const logout = catchAsyncErrors(
         });
     }
     
-)
+);
 
 
 
@@ -183,4 +183,63 @@ export const resetPassword = catchAsyncErrors(
         sendTokenToUser(user, 200, res);
     }
 
-)
+);
+
+
+
+
+
+
+
+
+
+
+// get user profile -> /api/v1/me
+export const getUserProfile = catchAsyncErrors(
+    async (req, res, next) => {
+
+        // get the user's information based on the id
+        const user = await userModel.findById(req?.user?._id);
+
+        // send the user's information to the user
+        res.status(200).json({
+            user,
+        });
+    }
+);
+
+
+
+
+// update password -> /api/v1/password/update
+export const updatePassword = catchAsyncErrors(
+    async (req, res, next) => {
+        // get oldPassword and newPassword from the request body
+        const { oldPassword, newPassword } = req.body;
+
+        // if old password or new password not provided
+        if(!oldPassword || !newPassword) {
+            return next(new ErrorHandler('please enter valid old password and new password', 400));
+        }
+
+        // get the current logged in user's information based on the id
+        const user = await userModel.findById(req?.user?._id).select("+password");
+
+        // compare if the old password matches with the saved password
+        const isPasswordCorrect = await user.comparePassword(oldPassword);
+        
+        // if entered oldpassword is incorrect then send the error message to the user
+        if(!isPasswordCorrect) {
+            return next(new ErrorHandler('old password is incorrect', 400));
+        }
+
+        // if it is correct then update the password in the database
+        user.password = newPassword;
+        await user.save();
+
+        // after updating the password send the response to the user
+        res.status(200).json({
+            success : true,
+        });        
+    }
+);
