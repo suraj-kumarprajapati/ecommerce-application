@@ -326,4 +326,76 @@ export const getUserDetails = catchAsyncErrors(
             user,
         });
     }
-)
+);
+
+
+
+
+
+
+
+
+// update user details -> /api/v1/admin/users/:id
+export const updateUser = catchAsyncErrors(
+    async (req, res, next) => {
+
+        // if updated values are not provided
+        if(!req.body.name || !req.body.email || !req.body.role) {
+            return next(new ErrorHandler("please enter name, email and role", 400));
+        }
+
+        // prepare the user data before udating
+        const newUserData = {
+            name : req.body?.name,
+            email : req.body?.email,
+            role : req.body?.role,
+        }
+
+        // find the user with this id
+        const user = await userModel.findById(req.params.id);
+
+        // if user not found
+        if(!user) {
+            return next(new ErrorHandler(`User not found with the id : ${req.params.id}`, 404));
+        }
+
+        // otherwise, find user by id and update user data in the database
+        const updatedUser = await userModel.findByIdAndUpdate(req.params.id, newUserData, {new : true});
+
+        // finally, send the confirmation
+        res.status(200).json({
+            updatedUser,
+        });
+       
+    }
+);
+
+
+
+
+
+
+// get user details (admin route) :-    /api/v1/admin/users/:id
+export const deleteUser = catchAsyncErrors(
+    async (req, res, next) => {
+        // get all users from the database
+        const user = await userModel.findById(req.params.id);
+
+        // if user not found
+        if(!user) {
+            return next(new ErrorHandler(`User not found with the id : ${req.params.id}`, 404));
+        }
+
+
+        // todo -> also delete the user details from cloudinary
+
+
+        // finally delete user from the database
+        await userModel.deleteOne(user);
+
+        // send the response to the admin
+        res.status(200).json({
+            success : true,
+        });
+    }
+);

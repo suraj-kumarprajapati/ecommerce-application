@@ -2,7 +2,7 @@
 
 
 import express from "express";
-import { loginUser, logout, registerUser, forgotPassword, resetPassword, getUserProfile, updatePassword, updateProfile, getAllUsers, getUserDetails } from "../controllers/authController.js";
+import { loginUser, logout, registerUser, forgotPassword, resetPassword, getUserProfile, updatePassword, updateProfile, getAllUsers, getUserDetails, updateUser, deleteUser } from "../controllers/authController.js";
 import { authorizeRoles, isUserAuthenticated } from "../middlewares/authMiddleware.js";
 
 
@@ -28,6 +28,10 @@ authRouter.route('/password/update').put(isUserAuthenticated, updatePassword);
 // admin routes
 authRouter.route('/admin/users').get(isUserAuthenticated, authorizeRoles("admin"), getAllUsers);
 authRouter.route('/admin/users/:id').get(isUserAuthenticated, authorizeRoles("admin"), getUserDetails);
+authRouter.route('/admin/users/:id').put(isUserAuthenticated, authorizeRoles("admin"), updateUser);
+authRouter.route('/admin/users/:id').delete(isUserAuthenticated, authorizeRoles("admin"), deleteUser);
+
+
 
 
 export default authRouter; 
