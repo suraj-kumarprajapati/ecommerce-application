@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRouter.js"
 import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js";
+import reviewRouter from "./routes/reviewRouter.js";
 
 
 // handle uncaught exceptions
@@ -45,6 +46,7 @@ app.use(cookieParser());
 app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRouter);
 app.use("/api/v1", orderRouter);
+app.use("/api/v1", reviewRouter);
 
 
 // use this middleware after the routes middlewares
