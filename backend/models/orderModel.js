@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 
 
-// create order schema
+// create order schema    
 const orderSchema = mongoose.Schema({
 
     shippingInfo : {
@@ -109,7 +109,7 @@ const orderSchema = mongoose.Schema({
     orderStatus : {
         type : String,
         enum : {
-            values : ["processing", "processed", "shipped", "delivered"],
+            values : ["processing", "shipped", "delivered"],
             message : "Please select correct order status",
         },
         default : "processing",
