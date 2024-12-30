@@ -6,8 +6,8 @@ const router = express.Router();
 
 
 // normal user
-router.route("/products").get(isUserAuthenticated, authorizeRoles("user", "admin"), getProducts);
-router.route("/products/:id").get(isUserAuthenticated, authorizeRoles("user", "admin"), getProductDetails); 
+router.route("/products").get(getProducts);
+router.route("/products/:id").get(getProductDetails); 
 
 
 // admin 
