@@ -1,19 +1,27 @@
-import React from "react";
-import Metadata from "./layouts/Metadata";
 import { useGetProductsQuery } from "../redux/api/productApi";
+import Metadata from "./layouts/Metadata";
+
+
+
+
+
+
 
 function Home() {
 
 
-  const {data} = useGetProductsQuery();
+  const { data, error, isLoading } = useGetProductsQuery();
   console.log(data);
+  
 
+  
 
 
 
   return (
     <>
       <Metadata title={"Buy Best Products Online"} />
+
       <div className="row">
         <div className="col-12 col-sm-6 col-md-12">
           <h1 id="products_heading" className="text-secondary">
