@@ -1,22 +1,12 @@
 import { useGetProductsQuery } from "../redux/api/productApi";
 import Metadata from "./layouts/Metadata";
-
-
-
-
-
-
+import ProductItem from "./product/ProductItem";
 
 function Home() {
-
-
   const { data, error, isLoading } = useGetProductsQuery();
-  console.log(data);
-  
 
-  
-
-
+  const productsList = data;
+  console.log(productsList);
 
   return (
     <>
@@ -30,39 +20,11 @@ function Home() {
 
           <section id="products" className="mt-5">
             <div className="row">
-              {/* Product Item 1  */}
-              <div className="col-sm-12 col-md-6 col-lg-3 my-3">
-                <div className="card p-3 rounded">
-                  <img
-                    className="card-img-top mx-auto"
-                    src="./images/default_product.png"
-                    alt=""
-                  />
-                  <div className="card-body ps-3 d-flex justify-content-center flex-column">
-                    <h5 className="card-title">
-                      <a href="">Product Name 1</a>
-                    </h5>
-                    <div className="ratings mt-auto d-flex">
-                      <div className="star-ratings">
-                        <i className="fa fa-star star-active"></i>
-                        <i className="fa fa-star star-active"></i>
-                        <i className="fa fa-star star-active"></i>
-                        <i className="fa fa-star star-active"></i>
-                        <i className="fa fa-star star-active"></i>
-                      </div>
-                      <span id="no_of_reviews" className="pt-2 ps-2">
-                        {" "}
-                        (0){" "}
-                      </span>
-                    </div>
-                    <p className="card-text mt-2">$100</p>
-                    <a href="" id="view_btn" className="btn btn-block">
-                      View Details
-                    </a>
-                  </div>
-                </div>
-              </div>
-              {/* End Product Item 1  */}
+              {
+                productsList?.products?.map((product, index) => (
+                  <ProductItem product={product} key={index} />
+                ))
+              }
             </div>
           </section>
         </div>
