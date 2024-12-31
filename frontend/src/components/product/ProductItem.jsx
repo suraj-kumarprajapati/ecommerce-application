@@ -14,7 +14,7 @@ function ProductItem({ product }) {
           />
           <div className="card-body ps-3 d-flex justify-content-center flex-column">
             <h5 className="card-title fw-bold">
-              <Link to={`/product/${product?._id}`}>{product?.name}</Link>
+              <Link to={`/products/${product?._id}`}>{product?.name}</Link>
             </h5>
 
             {/* Reviews and Ratings Start */}
@@ -41,7 +41,7 @@ function ProductItem({ product }) {
 
             {/* view details button start  */}
             <Link
-              to={`/product/${product?._id}`}
+              to={`/products/${product?._id}`}
               id="view_btn"
               className="btn btn-block"
             >

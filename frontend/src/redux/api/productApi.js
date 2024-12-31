@@ -12,6 +12,8 @@ export const productApi = createApi({
         baseUrl : "/api/v1"
     }),
 
+    keepUnusedDataFor : 30,
+
     endpoints: (builder) => ({
         getProducts : builder.query({
             query : (params) => ({
@@ -19,12 +21,17 @@ export const productApi = createApi({
             }),
         }),
 
-    }),
+        getProductDetails : builder.query({
+            query : (id) => ({
+                url : `/products/${id}`,
+            }),
+        }),
 
+    }),
 
 });
 
 
 
 // export this hook for using in the components
-export const  { useGetProductsQuery } = productApi;
+export const  { useGetProductsQuery, useGetProductDetailsQuery } = productApi;
