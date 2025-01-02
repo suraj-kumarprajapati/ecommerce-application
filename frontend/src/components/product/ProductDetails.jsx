@@ -137,7 +137,7 @@ function ProductDetails() {
 
           {/* in stock info start  */}
           <p>
-            Status:{" "}
+            Status : {" "}
             <span
               id="stock_status"
               className={product?.stock > 0 ? "greenColor" : "redColor"}
@@ -150,13 +150,18 @@ function ProductDetails() {
           <hr />
 
           {/* product description start  */}
-          <h4 className="mt-2">Description</h4>
+          <h4 className="mt-2">Description : </h4>
 
           <p>{product?.description}</p>
           <hr />
-          <p id="product_seller mb-3">
-            Sold by: <strong>{product?.seller}</strong>
+          <p>
+            Category : {product?.category}
           </p>
+          <hr />
+          <p id="product_seller mb-3">
+            Sold by : <strong>{product?.seller}</strong>
+          </p>
+          
           {/* product description end  */}
 
           <div className="alert alert-danger my-5" type="alert">

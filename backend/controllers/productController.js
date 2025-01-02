@@ -6,7 +6,7 @@ import ErrorHandler from "../utils/errorHandler.js"
 
 // get all products :   GET   /api/v1/products
 export const getProducts = catchAsyncErrors(
-    async (req, res, next) => {
+    async (req, res, next) => { 
 
         // apply searching, filtering and pagination on products based on the query before sending the results
         const apiFilters = new APIFilters(productModel, req.query);
