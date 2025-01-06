@@ -6,6 +6,7 @@ import ProductItem from "./product/ProductItem";
 import toast from "react-hot-toast";
 import CustomPagination from "./layouts/CustomPagination";
 import { useSearchParams } from "react-router-dom";
+import Filters from "./layouts/Filters";
 
 function Home() {
   // get the search params from the url
@@ -14,12 +15,25 @@ function Home() {
   // fetch the page number from the search params
   const page = Number(searchParams.get("page")) || 1;
   const keyword = searchParams.get('keyword');
+  const min = searchParams.get('min');
+  const max = searchParams.get('max');
+
 
   // make the params object
-  const params = {
+  let params = {
     page: page,
     keyword : keyword ? keyword : "",
   };
+
+  // if min price exists
+  if(min) {
+    params = {...params, min : min}
+  }
+
+  // if max price exists
+  if(max) {
+    params = {...params, max : max}
+  }
 
   // fetch the products based on the params
   const { data, error, isLoading, isError } = useGetProductsQuery(params);
@@ -44,15 +58,15 @@ function Home() {
 
       <div className="row">
 
+        {/* Filter section start  */}
         {
           keyword && (
             <div className={"col-md-3 col-sm-6 col-12 my-4"}>
-              <p>
-                Filters
-              </p>
+              <Filters />
             </div>
           )
-        }       
+        }    
+        {/* Filter section end     */}
 
 
         <div className={keyword ? "col-12 col-sm-6 col-md-9" : "col-12-col-sm-6 sol-md-12"}>

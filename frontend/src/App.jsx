@@ -5,6 +5,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import ProductDetails from "./components/product/ProductDetails";
+import Filters from "./components/layouts/Filters";
 
 
 
