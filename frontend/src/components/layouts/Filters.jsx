@@ -1,90 +1,76 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import { getSearchParamsAfterPriceFilter } from "../../helpers/filterHelper";
+import { categories } from "../../helpers/constants";
 
 function Filters() {
 
-    // state to manage the minimum and maximum price
-    const [minPrice, setMinPrice] = useState();
-    const [maxPrice, setMaxPrice] = useState();
+  // state to manage the minimum and maximum price
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
 
-    // get the search params
-    const [searchParams] = useSearchParams();
+  // get the search params
+  let [searchParams] = useSearchParams();
 
-    // get the navigato
-    const navigate = useNavigate();
+  // get the navigato
+  const navigate = useNavigate();
 
-    // handle the price form on form submission
-    const handlePriceSumbit = (e) => {
-        // prevent the default behaviour
-        e.preventDefault();
+  // handle the price form on form submission
+  const handlePriceSumbit = (e) => {
+    // prevent the default behaviour
+    e.preventDefault();
 
-        // filtering based only on min price
-        if(minPrice && !maxPrice) {
-            if(!searchParams.has('min')) {
-                searchParams.append('min', minPrice);
-            }
-            else {
-                searchParams.set('min', minPrice);
-            }
+    // get search params after applying price filter
+    searchParams = getSearchParamsAfterPriceFilter(
+      searchParams,
+      minPrice,
+      maxPrice,
+      toast
+    );
 
-            if(searchParams.has('max')) {
-                searchParams.delete('max');
-            }
-        }
+    // create updated path
+    const path = window.location.pathname + "?" + searchParams.toString();
 
-        // filtering based only on max price
-        if(maxPrice && !minPrice) {
-            if(!searchParams.has('max')) {
-                searchParams.append('max', maxPrice);
-            }
-            else {
-                searchParams.set('max', maxPrice);
-            }
-
-            if(searchParams.has('min')) {
-                searchParams.delete('min');
-            }
-        }
-
-        // filtering based on min price and max price
-        if(minPrice && maxPrice) {
-            // throw an error message and return
-            if(minPrice > maxPrice) {
-                toast.error('Min and Max Price is not valid');
-                return;
-            }
-                
-
-            if(!searchParams.has('min')) {
-                searchParams.append('min', minPrice);
-            }
-            else {
-                searchParams.set('min', minPrice);
-            }
+    // navigate to the path
+    navigate(path);
+  };
 
 
-            if(!searchParams.has('max')) {
-                searchParams.append('max', maxPrice);
-            }
-            else {
-                searchParams.set('max', maxPrice);
-            }
-        }
+  // handle the category filter
+  const handleCategory = (e) => {
+    // get the current checked checkbox
+    const checkbox = e.target;
 
-        // finally set page = 1
-        searchParams.set('page', 1);
-    
-        // create updated path
-        const path = window.location.pathname + "?" + searchParams.toString();
+    console.log(e);
 
-        // navigate to the path
-        navigate(path);      
+    // get all the checkboxes based on the name
+    const checkBoxes = document.getElementsByName(checkbox.name);
+
+    // check all other checkboxes to false
+    checkBoxes.forEach((currCheckbox) => {
+        if(currCheckbox !== checkbox)
+            currCheckbox.checked = false;
+    });
+
+    // add the current category to the seach params
+    if(checkbox.checked === true)  {
+        if(!searchParams.has('category'))
+            searchParams.append('category', checkbox.value);
+        else
+            searchParams.set('category', checkbox.value); 
     }
-
-
-
+    else {
+        if(searchParams.has('category'))
+            searchParams.delete('category');
+    }
+    
+    // create the path
+    const path = window.location.pathname + "?" + searchParams.toString();
+    
+    // navigate based on the new path
+    navigate(path);
+  }
 
   return (
     <>
@@ -94,11 +80,7 @@ function Filters() {
         <h3 className="filter-heading mb-3">Price</h3>
 
         {/* price filter start  */}
-        <form
-          id="filter_form"
-          className="px-2"
-          onSubmit={handlePriceSumbit}
-        >
+        <form id="filter_form" className="px-2" onSubmit={handlePriceSumbit}>
           <div className="row">
             <div className="col">
               <input
@@ -121,10 +103,7 @@ function Filters() {
               />
             </div>
             <div className="col">
-              <button 
-                type="submit" 
-                className="btn btn-primary"
-            >
+              <button type="submit" className="btn btn-primary">
                 GO
               </button>
             </div>
@@ -133,34 +112,30 @@ function Filters() {
         {/* price filter end  */}
 
         <hr />
+
+        {/* category filter start  */}
         <h3 className="mb-3">Category</h3>
 
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="category"
-            id="check4"
-            value="Category 1"
-          />
-          <label className="form-check-label" htmlFor="check4">
-            {" "}
-            Category 1{" "}
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="category"
-            id="check5"
-            value="Category 2"
-          />
-          <label className="form-check-label" htmlFor="check5">
-            {" "}
-            Category 2{" "}
-          </label>
-        </div>
+        {
+            categories.map((category, index) => {
+            return (
+                <div className="form-check" key={index}>
+                <input
+                    className="form-check-input"
+                    type="checkbox"
+                    name="category"
+                    id="check4"
+                    value={category}
+                    onClick={handleCategory}
+                />
+                <label className="form-check-label" htmlFor="check4">
+                    {category}
+                </label>
+                </div>
+            );
+        })}
+
+        {/* category filter end  */}
 
         <hr />
         <h3 className="mb-3">Ratings</h3>

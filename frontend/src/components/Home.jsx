@@ -17,6 +17,7 @@ function Home() {
   const keyword = searchParams.get('keyword');
   const min = searchParams.get('min');
   const max = searchParams.get('max');
+  const category = searchParams.get('category');
 
 
   // make the params object
@@ -33,6 +34,10 @@ function Home() {
   // if max price exists
   if(max) {
     params = {...params, max : max}
+  }
+
+  if(category) {
+    params = {...params, category : category}
   }
 
   // fetch the products based on the params
