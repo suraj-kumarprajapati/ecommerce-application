@@ -7,11 +7,32 @@ function Search() {
     const navigate = useNavigate();
     const [searchParams ] = useSearchParams();
 
-
-
     useEffect(() => {
-        setCurrValue();
-    }, [currValue]) 
+        setCurrValue(searchParams.get('keyword') || '');
+
+        if(searchParams.has('min')) {
+          searchParams.delete('min');
+        }
+        if(searchParams.has('max')) {
+          searchParams.delete('max');
+        }
+        if(searchParams.has('category')) {
+          searchParams.delete('category');
+        }
+        
+
+        const path = window.location.pathname + '?' + searchParams.toString();
+        navigate(path);
+    }, [currValue]);
+
+    
+
+
+    
+
+
+
+    
 
     
     const updateSearchParam = (e) => {

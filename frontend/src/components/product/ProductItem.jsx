@@ -24,8 +24,8 @@ function ProductItem({ product }) {
                 starRatedColor="#ffb829"
                 numberOfStars={5}
                 name="rating"
-                starDimension="20px"
-                starSpacing="5px"
+                starDimension="15px"
+                starSpacing="3px"
               />
 
               <span id="no_of_reviews" className="pt-2 ps-2">

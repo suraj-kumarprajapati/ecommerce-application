@@ -8,6 +8,10 @@ import CustomPagination from "./layouts/CustomPagination";
 import { useSearchParams } from "react-router-dom";
 import Filters from "./layouts/Filters";
 
+
+
+
+
 function Home() {
   // get the search params from the url
   const [searchParams] = useSearchParams();
@@ -18,12 +22,14 @@ function Home() {
   const min = searchParams.get('min');
   const max = searchParams.get('max');
   const category = searchParams.get('category');
+  const ratings = searchParams.get('ratings');
 
 
   // make the params object
   let params = {
     page: page,
     keyword : keyword ? keyword : "",
+
   };
 
   // if min price exists
@@ -38,6 +44,10 @@ function Home() {
 
   if(category) {
     params = {...params, category : category}
+  }
+
+  if(ratings) {
+    params = {...params, ratings};
   }
 
   // fetch the products based on the params

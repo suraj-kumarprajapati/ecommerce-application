@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import toast from "react-hot-toast";
 import { getSearchParamsAfterPriceFilter } from "../../helpers/filterHelper";
 import { categories } from "../../helpers/constants";
+import StarRatings from "react-star-ratings";
 
 function Filters() {
-
   // state to manage the minimum and maximum price
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
@@ -13,32 +12,49 @@ function Filters() {
   // get the search params
   let [searchParams] = useSearchParams();
 
-  // get the navigato
+  // get the navigate method
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchParams.has("min")) searchParams.delete("min");
+
+    if (searchParams.has("max")) searchParams.delete("max");
+
+    if (searchParams.has("category")) {
+      searchParams.delete("category");
+    }
+
+    if (searchParams.has("ratings")) {
+      searchParams.delete("ratings");
+    }
+
+    const path = window.location.pathname + "?" + searchParams.toString();
+    navigate(path);
+  }, []);
 
   // handle the price form on form submission
   const handlePriceSumbit = (e) => {
-    // prevent the default behaviour
     e.preventDefault();
 
     // get search params after applying price filter
-    searchParams = getSearchParamsAfterPriceFilter(
+    const updatedSearchParams = getSearchParamsAfterPriceFilter(
       searchParams,
       minPrice,
-      maxPrice,
-      toast
+      maxPrice
     );
+
+    // set the updated search params
+    searchParams = updatedSearchParams;
 
     // create updated path
     const path = window.location.pathname + "?" + searchParams.toString();
 
-    // navigate to the path
+    // navigate to the updated path
     navigate(path);
   };
 
-
   // handle the category filter
-  const handleCategory = (e) => {
+  const handleCheckbox = (e) => {
     // get the current checked checkbox
     const checkbox = e.target;
 
@@ -49,28 +65,24 @@ function Filters() {
 
     // check all other checkboxes to false
     checkBoxes.forEach((currCheckbox) => {
-        if(currCheckbox !== checkbox)
-            currCheckbox.checked = false;
+      if (currCheckbox !== checkbox) currCheckbox.checked = false;
     });
 
     // add the current category to the seach params
-    if(checkbox.checked === true)  {
-        if(!searchParams.has('category'))
-            searchParams.append('category', checkbox.value);
-        else
-            searchParams.set('category', checkbox.value); 
+    if (checkbox.checked === true) {
+      if (!searchParams.has(checkbox.name))
+        searchParams.append(checkbox.name, checkbox.value);
+      else searchParams.set(checkbox.name, checkbox.value);
+    } else {
+      if (searchParams.has(checkbox.name)) searchParams.delete(checkbox.name);
     }
-    else {
-        if(searchParams.has('category'))
-            searchParams.delete('category');
-    }
-    
+
     // create the path
     const path = window.location.pathname + "?" + searchParams.toString();
-    
+
     // navigate based on the new path
     navigate(path);
-  }
+  };
 
   return (
     <>
@@ -116,54 +128,59 @@ function Filters() {
         {/* category filter start  */}
         <h3 className="mb-3">Category</h3>
 
-        {
-            categories.map((category, index) => {
-            return (
-                <div className="form-check" key={index}>
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="category"
-                    id="check4"
-                    value={category}
-                    onClick={handleCategory}
-                />
-                <label className="form-check-label" htmlFor="check4">
-                    {category}
-                </label>
-                </div>
-            );
+        {categories.map((category, index) => {
+          return (
+            <div className="form-check" key={index}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="category"
+                id="check4"
+                value={category}
+                onClick={handleCheckbox}
+              />
+              <label className="form-check-label" htmlFor="check4">
+                {category}
+              </label>
+            </div>
+          );
         })}
 
         {/* category filter end  */}
 
         <hr />
+
+        {/* ratings filter start  */}
         <h3 className="mb-3">Ratings</h3>
 
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="ratings"
-            id="check7"
-            value="5"
-          />
-          <label className="form-check-label" htmlFor="check7">
-            <span className="star-rating">★ ★ ★ ★ ★</span>
-          </label>
-        </div>
-        <div className="form-check">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            name="ratings"
-            id="check8"
-            value="4"
-          />
-          <label className="form-check-label" htmlFor="check8">
-            <span className="star-rating">★ ★ ★ ★ ☆</span>
-          </label>
-        </div>
+        {[5, 4, 3, 2, 1].map((rating, index) => {
+          return (
+            <div className="form-check" key={index}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="ratings"
+                id="check7"
+                value={rating}
+                onClick={handleCheckbox}
+              />
+              <label className="form-check-label" htmlFor="check7">
+                <span className="star-rating">
+                  <StarRatings
+                    rating={rating}
+                    starRatedColor="#ffb829"
+                    starDimension="15px"
+                    starSpacing="3px"
+                    numberOfStars={5}
+                    name="rating"
+                  />
+                </span>
+              </label>
+            </div>
+          );
+        })}
+
+        {/* ratings filter end  */}
       </div>
     </>
   );
