@@ -5,12 +5,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import ProductDetails from "./components/product/ProductDetails";
-import Filters from "./components/layouts/Filters";
-
-
-
-
-
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 
 
 function App() {
@@ -25,6 +21,9 @@ function App() {
 					<Routes>
 						<Route path="/" element={ <Home />} />
 						<Route path="/products/:id" element={ <ProductDetails /> } />
+
+						<Route path="/Login" element={<Login />} />
+						<Route path="/register" element={<Register />} />
 					</Routes>
 				</div>
 
