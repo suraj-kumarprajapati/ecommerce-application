@@ -16,7 +16,7 @@ function ProductDetails() {
   );
 
   const product = data?.product;
-  console.log(product);
+  // console.log(product);
   // fetch product data end
 
   // set the activeImageUrl
@@ -30,7 +30,7 @@ function ProductDetails() {
     if (isError) {
       toast.error(error?.data?.message);
     }
-  }, [isError]);
+  }, [isError, error]);
 
   // if product is still loading
   if (isLoading) {
@@ -118,7 +118,7 @@ function ProductDetails() {
               type="number"
               className="form-control count d-inline"
               value="1"
-              readonly
+              readOnly
             />
             <span className="btn btn-primary plus">+</span>
           </div>

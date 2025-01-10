@@ -1,27 +1,39 @@
+
+
 import { useEffect, useState } from "react"
 import { useRegisterMutation } from "../../redux/api/authApi";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
 
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
-
+    const {isAuthenticated} = useSelector((state) => state.auth);
     const [register, {isError, error, data, isLoading, isSuccess }] = useRegisterMutation();
+    const navigate = useNavigate();
 
     console.log(data);
 
     // if error occurs or register successfull
     useEffect(() => {
+        // if user is already authenticated, go to home page
+        if(isAuthenticated) {
+            navigate("/");
+        }
+
+        // if any error occurs
         if(isError) {
             toast.error(error?.data?.message);
         }
 
+        // if registeration is successfull
         if(isSuccess) {
             toast.success('Register Succesfull');
         }
-    }, [isError, error, isSuccess])
+    }, [isError, error, isSuccess, isAuthenticated, navigate]);
 
 
     // handle register form

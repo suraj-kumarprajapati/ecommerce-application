@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 function CustomPagination({totalItemsCount, itemsPerPage}) {
     const navigate = useNavigate();
 
-    console.log(totalItemsCount, itemsPerPage)
-
     // get the current page number from the url
     const [searchParams] = useSearchParams();
 

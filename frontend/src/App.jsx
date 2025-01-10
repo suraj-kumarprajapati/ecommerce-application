@@ -13,7 +13,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<div className="App">
-				<Toaster position="top-center" />
+				<Toaster position="bottom-center" />
 
 				<Header />
 

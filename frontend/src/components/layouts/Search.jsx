@@ -93,7 +93,7 @@ function Search() {
   return (
     <>
       <div className="col-12 col-md-6 mt-2 mt-md-0">
-        <form onSubmit={submitHandler} method="get">
+        <form onSubmit={submitHandler}>
           <div className="input-group">
             <input
               type="text"

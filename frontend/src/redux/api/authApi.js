@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { userApi } from "./userApi";
 
 
 
@@ -21,6 +22,17 @@ export const authApi = createApi({
                 body : body,
             }),
 
+
+            async onQueryStarted (args, {dispatch, queryFulfilled}) {
+                try {
+                    await queryFulfilled;
+                    dispatch(userApi.endpoints.getMyProfile.initiate(null));
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            }
+
         }),
 
 
@@ -32,6 +44,12 @@ export const authApi = createApi({
             }),
 
         }),
+
+        logout : build.query({
+            query : () => ({
+                url : "/logout",
+            })
+        }),
     }),
 
 })
@@ -39,4 +57,4 @@ export const authApi = createApi({
 
 
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLazyLogoutQuery } = authApi;

@@ -29,7 +29,6 @@ function Home() {
   let params = {
     page: page,
     keyword : keyword ? keyword : "",
-
   };
 
   // if min price exists
@@ -55,14 +54,13 @@ function Home() {
 
   // store the products list
   const productsList = data;
-  console.log(productsList);
 
   // if error occurs
   useEffect(() => {
     if (isError) {
       toast.error(error?.data?.message);
     }
-  }, [isError]);
+  }, [isError, error]);
 
   // while data is being loaded
   if (isLoading) return <Loader />;
