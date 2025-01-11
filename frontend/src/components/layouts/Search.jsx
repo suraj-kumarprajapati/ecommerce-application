@@ -61,9 +61,9 @@ function Search() {
     }
 
 
-    // on submittin the form
+    // on submitting the form
     const submitHandler = (e) => {
-        // // prevent the default behaviour
+        // prevent the default behaviour
         // e.preventDefault();
 
         // set the keyword in the search params

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
 import { useGetMyProfileQuery } from "../../redux/api/userApi";
 import { useLazyLogoutQuery } from "../../redux/api/authApi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setIsAuthenticated, setUser } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 
@@ -13,6 +13,8 @@ const Header = () => {
   // const navigate = useNavigate();     // for navigation
   const dispatch = useDispatch();    // to change the user details
   const [logout] = useLazyLogoutQuery();   // logout function
+  const location = useLocation();
+  console.log(location);
 
   
 
@@ -62,7 +64,10 @@ const Header = () => {
       </div>
 
       {/* search section  */}
-      <Search />
+      {
+        location.pathname == "/" && <Search />
+      }
+      {/* search section end  */}
 
       {/* cart info  */}
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
