@@ -38,9 +38,14 @@ export const userApi = createApi({
                     console.log(error);
                 }
             }
+        }),
 
-
-
+        updateUser : build.mutation({
+            query : (body) => ({
+                url : '/me/update',
+                method : 'PUT',
+                body : body,
+            }),
         }),
     }),
 
@@ -49,4 +54,4 @@ export const userApi = createApi({
 
 
 
-export const { useGetMyProfileQuery } = userApi;
+export const { useGetMyProfileQuery, useUpdateUserMutation } = userApi;

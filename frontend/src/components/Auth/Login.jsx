@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../redux/api/authApi.js";
 import toast from 'react-hot-toast'
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -13,28 +12,26 @@ const Login = () => {
   const [login, {isLoading, isError, error, isSuccess}] = useLoginMutation();
 
   const navigate = useNavigate();
-  const {isAuthenticated} = useSelector((state) => state.auth);
 
 
   useEffect(() => {
     // if user is already authenticated, go to home page
-    if(isAuthenticated) {
-      navigate("/");
-    }
-
+    
     // if any error occurs
     if(isError) {
       toast.error(error?.data?.message);
     }
 
     // if logged in successfully
-    if(isSuccess)
+    if(isSuccess) {
       toast.success('Login Successfull');
-  }, [isError, error, isSuccess, isAuthenticated, navigate])
+      navigate("/");
+    }
+  }, [isError, error, isSuccess, navigate])
 
 
   // on submitting the form (login)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // prevent default behaviour
     e.preventDefault();
 
@@ -45,9 +42,7 @@ const Login = () => {
     }
     
     // call login function with authentication details
-    login(loginData)
-
-
+    await login(loginData)
   }
 
   return (
