@@ -5,6 +5,7 @@ import sendTokenToUser from "../utils/sendTokenToUser.js";
 import { getResetPasswordTemplate } from "../utils/emailTemplate.js";
 import sendEmail from "../utils/sendEmail.js";
 import crypto from "crypto";
+import { uploadFile } from "../utils/cloudinary.js";
 
 
 
@@ -87,6 +88,34 @@ export const logout = catchAsyncErrors(
         res.status(200).json({
             message : "Logged Out successfully",
         });
+    }
+    
+);
+
+
+
+// upload avatar -> api/v1/me/upload_avatar
+export const uploadAvatar = catchAsyncErrors(
+
+    async (req, res, next) => {
+        try {
+            // upload awatar
+            const avatarResponse = await uploadFile(req.body?.avatar, "shopCart/avatars");
+
+            // after uploading the file in cloudinary, save the url link in the database
+            const user = await userModel.findByIdAndUpdate(req?.user?._id, {
+                avatar : avatarResponse,
+            });
+            
+            // send response to user
+            res.status(200).json({
+                user,
+            });
+        }
+        catch(error) {
+            next(new ErrorHandler("file could not be uploaded", 400));
+        }
+
     }
     
 );

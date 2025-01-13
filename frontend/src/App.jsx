@@ -10,6 +10,7 @@ import Register from "./components/Auth/Register";
 import Profile from "./components/user/Profile";
 import UpdateUserProfile from "./components/user/UpdateUserProfile";
 import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
+import { UploadAvatar } from "./components/user/UploadAvatar";
 
 
 function App() {
@@ -40,6 +41,15 @@ function App() {
 							element={ 
 								<ProtectedRoute> 
 									<UpdateUserProfile /> 
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route 
+							path="/me/upload_avatar" 
+							element={ 
+								<ProtectedRoute> 
+									<UploadAvatar /> 
 								</ProtectedRoute>
 							}
 						/>

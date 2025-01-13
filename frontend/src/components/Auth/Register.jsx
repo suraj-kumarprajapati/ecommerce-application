@@ -19,11 +19,6 @@ function Register() {
 
     // if error occurs or register successfull
     useEffect(() => {
-        // if user is already authenticated, go to home page
-        if(isAuthenticated) {
-            navigate("/");
-        }
-
         // if any error occurs
         if(isError) {
             toast.error(error?.data?.message);
@@ -32,8 +27,9 @@ function Register() {
         // if registeration is successfull
         if(isSuccess) {
             toast.success('Register Succesfull');
+            navigate("/");
         }
-    }, [isError, error, isSuccess, isAuthenticated, navigate]);
+    }, [isError, error, isSuccess, navigate]);
 
 
     // handle register form

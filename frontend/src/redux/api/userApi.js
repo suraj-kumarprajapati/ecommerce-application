@@ -3,7 +3,7 @@
 
 
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setIsAuthenticated, setUser } from "../features/userSlice";
+import { setIsAuthenticated, setIsUserLoading, setUser } from "../features/userSlice";
 
 
 
@@ -35,8 +35,10 @@ export const userApi = createApi({
                     const {data} = await queryFulfilled;
                     dispatch(setUser(data));
                     dispatch(setIsAuthenticated(true));
+                    dispatch(setIsUserLoading(false));
                 }
                 catch(error) {
+                    dispatch(setIsUserLoading(false));
                     console.log(error);
                 }
             },
@@ -53,6 +55,17 @@ export const userApi = createApi({
 
             invalidatesTags : ["User"]
         }),
+
+        uploadAvatar : build.mutation({
+            query : (body) => ({
+                url : '/me/upload_avatar',
+                method : 'PUT',
+                body : body,
+            }),
+
+            invalidatesTags : ["User"]
+        })
+        
     }),
 
 })
@@ -60,4 +73,4 @@ export const userApi = createApi({
 
 
 
-export const { useGetMyProfileQuery, useUpdateUserMutation } = userApi;
+export const { useGetMyProfileQuery, useUpdateUserMutation, useUploadAvatarMutation } = userApi;

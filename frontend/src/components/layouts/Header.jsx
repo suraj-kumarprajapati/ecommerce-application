@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
 import { useGetMyProfileQuery } from "../../redux/api/userApi";
 import { useLazyLogoutQuery } from "../../redux/api/authApi";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { setIsAuthenticated, setUser } from "../../redux/features/userSlice";
+import { Link, useLocation } from "react-router-dom";
+import { setIsAuthenticated, setIsUserLoading, setUser } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 
@@ -28,6 +28,7 @@ const Header = () => {
       // set auth/user details to be null/false
       dispatch(setUser(null));
       dispatch(setIsAuthenticated(false));
+      dispatch(setIsUserLoading(true));
     }
 
   }, [isError, error, isSuccess, data, dispatch]);

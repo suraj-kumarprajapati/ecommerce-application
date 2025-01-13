@@ -43,6 +43,17 @@ export const authApi = createApi({
                 body : body,
             }),
 
+
+            async onQueryStarted (args, {dispatch, queryFulfilled}) {
+                try {
+                    await queryFulfilled;
+                    dispatch(userApi.endpoints.getMyProfile.initiate(null));
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            }
+
         }),
 
         logout : build.query({
