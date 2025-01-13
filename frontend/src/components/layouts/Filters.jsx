@@ -32,6 +32,8 @@ function Filters() {
     navigate(path);
   }, []);
 
+
+
   // handle the price form on form submission
   const handlePriceSumbit = (e) => {
     e.preventDefault();
@@ -57,8 +59,6 @@ function Filters() {
   const handleCheckbox = (e) => {
     // get the current checked checkbox
     const checkbox = e.target;
-
-    console.log(e);
 
     // get all the checkboxes based on the name
     const checkBoxes = document.getElementsByName(checkbox.name);

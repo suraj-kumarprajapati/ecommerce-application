@@ -1,99 +1,82 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUpdateUserMutation } from "../../redux/api/userApi";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import {  setUser } from "../../redux/features/userSlice";
+import usePutDefaultUpdateUser from "../../hooks/usePutDefaultInUpdateUser.js";
+import useHandleUpdateUserEffects from "../../hooks/useHandleUpdateUserEffects.js";
+import getUpdateUserFormHandler from "../../helpers/getUpdateUserFormHandler.js";
+import UserLayout from "../layouts/UserLayout";
 
 const UpdateUserProfile = () => {
+  // define states to take input from the user
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  // get updateUser api function to update user details
+  const [updateUser, { isSuccess, error, isError, data }] =
+    useUpdateUserMutation();
 
-    const {user} = useSelector(state => state?.auth);
-    const [userName, setUserName] = useState(user?.name || '');
-    const [userEmail, setUserEmail] = useState(user?.email || '');
-    const [updateUser, { isSuccess, error, isError, data}] = useUpdateUserMutation();
-    const dispatch = useDispatch();
+  // put default values in the update user form
+  usePutDefaultUpdateUser({ setUserName, setUserEmail });
 
+  // handle the side effects of handle form submit event handler
+  useHandleUpdateUserEffects({ isSuccess, error, isError, data });
 
-    // handle the side effects of form handle function
-    useEffect( () => {
-        if(isSuccess) {
-            toast.success('user profile updated successfully');
-            dispatch(setUser(data?.updatedUser));
-        }
+  // get the update user form handler
+  const updateUserFormHandler = getUpdateUserFormHandler({
+    userName,
+    userEmail,
+    updateUser,
+  });
 
-        if(isError) {
-            toast.error(error?.data?.message);
-        }
-    }, [isSuccess, isError, error, data, dispatch]);
-    
-
-
-    // form submit handler function
-    const handleSubmit = async (e) => {
-        // prevent the default behaviour
-        e.preventDefault();
-
-        // prepare the user data for updation
-        const userData = {
-            name : userName,
-            email :userEmail,
-        }
-
-        // call the update user profile api
-        await updateUser(userData);
-    }
-  
-  
-    return (
+  return (
     <>
-      <div className="row wrapper">
-        <div className="col-10 col-lg-8">
-          <form
-            className="shadow rounded bg-body"
-            encType="multipart/form-data"
-            onSubmit={handleSubmit}
-          >
-            <h2 className="mb-4">Update Profile</h2>
+      <UserLayout>
+        <div className="row wrapper">
+          <div className="col-10 col-lg-8">
+            <form
+              className="shadow rounded bg-body"
+              encType="multipart/form-data"
+              onSubmit={updateUserFormHandler}
+            >
+              <h2 className="mb-4">Update Profile</h2>
 
-            <div className="mb-3">
-              <label htmlFor="name_field" className="form-label">
-                {" "}
-                Name{" "}
-              </label>
-              <input
-                type="text"
-                id="name_field"
-                className="form-control"
-                name="name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="name_field" className="form-label">
+                  {" "}
+                  Name{" "}
+                </label>
+                <input
+                  type="text"
+                  id="name_field"
+                  className="form-control"
+                  name="name"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
 
-            <div className="mb-3">
-              <label htmlFor="email_field" className="form-label">
-                {" "}
-                Email{" "}
-              </label>
-              <input
-                type="email"
-                id="email_field"
-                className="form-control"
-                name="email"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="email_field" className="form-label">
+                  {" "}
+                  Email{" "}
+                </label>
+                <input
+                  type="email"
+                  id="email_field"
+                  className="form-control"
+                  name="email"
+                  value={userEmail}
+                  onChange={(e) => setUserEmail(e.target.value)}
+                />
+              </div>
 
-            <button type="submit" className="btn update-btn w-100">
-              Update
-            </button>
-          </form>
+              <button type="submit" className="btn update-btn w-100">
+                Update
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
+      </UserLayout>
     </>
   );
 };
-
-
 
 export default UpdateUserProfile;

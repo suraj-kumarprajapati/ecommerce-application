@@ -18,6 +18,8 @@ export const userApi = createApi({
         baseUrl : '/api/v1',
     }),
 
+    tagTypes : ["User"],
+
     endpoints : (build) => ({
         getMyProfile : build.query({
             query : () => ({
@@ -37,7 +39,9 @@ export const userApi = createApi({
                 catch(error) {
                     console.log(error);
                 }
-            }
+            },
+
+            providesTags : ["User"]
         }),
 
         updateUser : build.mutation({
@@ -46,6 +50,8 @@ export const userApi = createApi({
                 method : 'PUT',
                 body : body,
             }),
+
+            invalidatesTags : ["User"]
         }),
     }),
 

@@ -13,8 +13,8 @@ const Header = () => {
   // const navigate = useNavigate();     // for navigation
   const dispatch = useDispatch(); // to change the user details
   const [logout, { data, isError, error, isSuccess }] = useLazyLogoutQuery(); // logout function
-  const location = useLocation();
-  console.log(location);
+  const location = useLocation();  // get the path location
+  
 
   useEffect(() => {
     // if any error occurs

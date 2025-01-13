@@ -9,6 +9,7 @@ import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Profile from "./components/user/Profile";
 import UpdateUserProfile from "./components/user/UpdateUserProfile";
+import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
 
 
 function App() {
@@ -27,8 +28,21 @@ function App() {
 						<Route path="/Login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 
-						<Route path="/me/profile" element={<Profile />} />
-						<Route path="/me/update_profile" element={<UpdateUserProfile />} />
+						<Route 
+							path="/me/profile" 
+							element={ 
+								<ProtectedRoute> 
+									<Profile /> 
+								</ProtectedRoute>} 
+						/>
+						<Route 
+							path="/me/update_profile" 
+							element={ 
+								<ProtectedRoute> 
+									<UpdateUserProfile /> 
+								</ProtectedRoute>
+							}
+						/>
 					</Routes>
 				</div>
 
