@@ -5,7 +5,7 @@ import sendTokenToUser from "../utils/sendTokenToUser.js";
 import { getResetPasswordTemplate } from "../utils/emailTemplate.js";
 import sendEmail from "../utils/sendEmail.js";
 import crypto from "crypto";
-import { uploadFile } from "../utils/cloudinary.js";
+import { deleteFile, uploadFile } from "../utils/cloudinary.js";
 
 
 
@@ -99,6 +99,12 @@ export const uploadAvatar = catchAsyncErrors(
 
     async (req, res, next) => {
         try {
+
+            // before uploading the file, delete the previous avatar
+            if(req?.user?.avatar?.url) {
+                deleteFile(req?.user?.avatar?.public_id);
+            }
+            
             // upload awatar
             const avatarResponse = await uploadFile(req.body?.avatar, "shopCart/avatars");
 
@@ -113,7 +119,7 @@ export const uploadAvatar = catchAsyncErrors(
             });
         }
         catch(error) {
-            next(new ErrorHandler("file could not be uploaded", 400));
+            next(new ErrorHandler(error?.message, 400));
         }
 
     }

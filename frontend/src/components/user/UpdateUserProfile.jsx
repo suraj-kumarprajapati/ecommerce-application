@@ -9,9 +9,9 @@ const UpdateUserProfile = () => {
   // define states to take input from the user
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  
   // get updateUser api function to update user details
-  const [updateUser, { isSuccess, error, isError, data }] =
-    useUpdateUserMutation();
+  const [updateUser, { isSuccess, error, isError, data }] = useUpdateUserMutation();
 
   // put default values in the update user form
   usePutDefaultUpdateUser({ setUserName, setUserEmail });

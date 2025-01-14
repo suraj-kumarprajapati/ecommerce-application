@@ -15,7 +15,7 @@ cloudinary.config({
 export const uploadFile = async (file, folder) => {
     try {
         const result = await cloudinary.uploader.upload(file, {
-            resource_type : auto,
+            resource_type : "auto",
             folder : folder,
         });
 

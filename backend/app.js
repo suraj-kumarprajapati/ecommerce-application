@@ -36,9 +36,9 @@ connectDatabase();
 
 
 // middlewares
-app.use(express.json());  
+app.use(express.json({limit : "2mb"}));  
 app.use(express.text());
-app.use(express.query()); 
+app.use(express.query());
 app.use(cookieParser());
 
 
