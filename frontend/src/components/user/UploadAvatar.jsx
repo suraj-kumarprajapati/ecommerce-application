@@ -43,7 +43,7 @@ export const UploadAvatar = () => {
     e.preventDefault();
 
     if(avatar == user?.avatar?.url) {
-      toast.error("choose a valid avatar");
+      toast.error("choose a different avatar");
       return;
     }
 

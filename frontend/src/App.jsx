@@ -11,6 +11,7 @@ import Profile from "./components/user/Profile";
 import UpdateUserProfile from "./components/user/UpdateUserProfile";
 import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
 import { UploadAvatar } from "./components/user/UploadAvatar";
+import { UpdatePassword } from "./components/user/UpdatePassword";
 
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route path="me/update_password" element={ <ProtectedRoute> <UpdatePassword /> </ProtectedRoute>} />
 					</Routes>
 				</div>
 
