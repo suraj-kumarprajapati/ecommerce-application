@@ -13,6 +13,7 @@ export const UpdatePassword = () => {
     const navigate = useNavigate();
 
 
+    // handle the side effects
     useEffect(() => {
         if (isSuccess) {
           toast.success("password updated successfully");
@@ -26,6 +27,7 @@ export const UpdatePassword = () => {
       }, [isSuccess, isError, error, navigate]);
 
 
+    // toggle the visibility of password
     const toggleVisibility = (e) => {
         const passwordField = document.getElementById(e.target.name);
 

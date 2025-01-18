@@ -12,9 +12,12 @@ import UpdateUserProfile from "./components/user/UpdateUserProfile";
 import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
 import { UploadAvatar } from "./components/user/UploadAvatar";
 import { UpdatePassword } from "./components/user/UpdatePassword";
+import ForgotPassword from "./components/Auth/ForgotPassword";
 
 
 function App() {
+
+
 	return (
 		<BrowserRouter>
 			<div className="App">
@@ -56,6 +59,8 @@ function App() {
 						/>
 
 						<Route path="me/update_password" element={ <ProtectedRoute> <UpdatePassword /> </ProtectedRoute>} />
+
+						<Route path="password/forgot" element={ <ForgotPassword /> } />
 					</Routes>
 				</div>
 

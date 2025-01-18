@@ -61,6 +61,15 @@ export const authApi = createApi({
                 url : "/logout",
             })
         }),
+
+
+        forgotPassword : build.mutation({
+            query : (body) => ({
+                url : "/password/forgot",
+                method : "POST",
+                body : body,
+            })
+        })
     }),
 
 })
@@ -68,4 +77,4 @@ export const authApi = createApi({
 
 
 
-export const { useLoginMutation, useRegisterMutation, useLazyLogoutQuery } = authApi;
+export const { useLoginMutation, useRegisterMutation, useLazyLogoutQuery, useForgotPasswordMutation } = authApi;

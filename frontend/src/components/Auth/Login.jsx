@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLoginMutation } from "../../redux/api/authApi.js";
 import toast from 'react-hot-toast'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Login = () => {
@@ -90,18 +90,18 @@ const Login = () => {
               />
             </div>
 
-            <a href="/password/forgot" className="float-end mb-4">
+            <Link to="/password/forgot" className="float-end mb-4">
               Forgot Password?
-            </a>
+            </Link>
 
             <button id="login_button" type="submit" className="btn w-100 py-2" disabled={isLoading} >
               { isLoading ? "Authenticating....." : "LOGIN" }
             </button>
 
             <div className="my-3">
-              <a href="/register" className="float-end">
+              <Link to="/register" className="float-end">
                 New User?
-              </a>
+              </Link>
             </div>
           </form>
         </div>
