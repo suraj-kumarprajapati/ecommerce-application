@@ -12,10 +12,9 @@ function Register() {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const {isAuthenticated} = useSelector((state) => state.auth);
-    const [register, {isError, error, data, isLoading, isSuccess }] = useRegisterMutation();
+    const [register, {isError, error, isLoading, isSuccess }] = useRegisterMutation();
     const navigate = useNavigate();
 
-    console.log(data);
 
     // if error occurs or register successfull
     useEffect(() => {

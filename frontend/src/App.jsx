@@ -2,7 +2,7 @@ import Footer from "./components/layouts/Footer";
 import Header from "./components/layouts/Header";
 import Home from "./components/Home";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useSearchParams } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import ProductDetails from "./components/product/ProductDetails";
 import Login from "./components/Auth/Login";
@@ -13,9 +13,13 @@ import { ProtectedRoute } from "./components/Auth/ProtectedRoute";
 import { UploadAvatar } from "./components/user/UploadAvatar";
 import { UpdatePassword } from "./components/user/UpdatePassword";
 import ForgotPassword from "./components/Auth/ForgotPassword";
+import ResetPassword from "./components/Auth/ResetPassword";
 
 
 function App() {
+
+
+	
 
 
 	return (
@@ -32,6 +36,8 @@ function App() {
 
 						<Route path="/Login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
+						<Route path="password/forgot" element={ <ForgotPassword /> } />
+						<Route path="password/reset/:token" element={ <ResetPassword /> } />
 
 						<Route 
 							path="/me/profile" 
@@ -45,7 +51,7 @@ function App() {
 							element={ 
 								<ProtectedRoute> 
 									<UpdateUserProfile /> 
-								</ProtectedRoute>
+								</ProtectedRoute> 
 							}
 						/>
 
@@ -60,7 +66,7 @@ function App() {
 
 						<Route path="me/update_password" element={ <ProtectedRoute> <UpdatePassword /> </ProtectedRoute>} />
 
-						<Route path="password/forgot" element={ <ForgotPassword /> } />
+						
 					</Routes>
 				</div>
 

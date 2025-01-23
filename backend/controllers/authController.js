@@ -148,7 +148,7 @@ export const forgotPassword = catchAsyncErrors(
         await user.save(); 
 
         // create reset password url
-        const resetUrl = `${process.env.FRONTEND_URL}/api/v1/password/reset/${resetToken}`;
+        const resetUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
         // message generate form email template
         const message = getResetPasswordTemplate(user?.name, resetUrl);
