@@ -36,6 +36,11 @@ const ResetPassword = () => {
   const resetPasswordHandler = (e) => {
     e.preventDefault();
 
+    if(!password || !confirmPassword) {
+      toast.error("Field can not be empty");
+      return;
+    }
+
     if(password !== confirmPassword) {
       toast.error("Password does not match");
       return;
