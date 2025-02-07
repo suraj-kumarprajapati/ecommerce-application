@@ -4,10 +4,17 @@ import StarRatings from "react-star-ratings";
 import Loader from "../layouts/Loader";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setCartItem } from "../../redux/features/cartSlice";
 
 function ProductDetails() {
   // this will handle the active image url
   const [activeImageUrl, setActiveImageUrl] = useState("");
+  // this will handle the quantity of the product
+  const [quantity, setQuantity] = useState(1);
+
+  // import dispatch from react-redux
+  const dispatch = useDispatch();
 
   // fetch product data start
   const params = useParams();
@@ -15,7 +22,12 @@ function ProductDetails() {
     params.id
   );
 
-  const product = data?.product;
+  let product = data?.product;
+
+  // useEffect(() => {
+  //   product = data?.product;
+  // }, [data])
+  
   // console.log(product);
   // fetch product data end
 
@@ -45,11 +57,48 @@ function ProductDetails() {
   };
 
 
+  // define incrementQuantity
+  const incrementQuantity = () => {
+    if (quantity >= product?.stock) {
+      toast.error("Product stock is limited");
+      return;
+    }
+    setQuantity(quantity => quantity + 1);
+  };
+
+  // define decrementQuantity
+  const decrementQuantity = () => {
+    if (quantity <= 1) {
+      toast.error("Quantity cannot be less than 1");
+      return;
+    }
+    setQuantity(quantity => quantity - 1);
+  };
+
+
   // if product not found
   if(!product) {
     return (
         <h1>Product Not Found</h1>
     )
+  }
+
+
+  // set item to cart
+  const setItemToCart = () => {
+    // create the cart item
+    const cartItem = {
+      product : product?._id,
+      name : product?.name,
+      price : product?.price,
+      image : product?.images[0]?.url,
+      stock : product?.stock,
+      quantity : quantity,
+    }
+
+    // dispatch set cart method
+    dispatch(setCartItem(cartItem));
+    toast.success("items added to cart successfully");
   }
 
   return (
@@ -113,14 +162,24 @@ function ProductDetails() {
           {/* product price start  */}
           <p id="product_price">{`$${product?.price}`}</p>
           <div className="stockCounter d-inline">
-            <span className="btn btn-danger minus">-</span>
+            <span 
+              className="btn btn-danger minus"
+              onClick={ decrementQuantity }
+            >
+              -
+            </span>
             <input
               type="number"
               className="form-control count d-inline"
-              value="1"
+              value={quantity}
               readOnly
             />
-            <span className="btn btn-primary plus">+</span>
+            <span 
+              className="btn btn-primary plus"
+              onClick={ incrementQuantity }
+            >
+              +
+            </span>
           </div>
           {/* product price end  */}
 
@@ -128,7 +187,8 @@ function ProductDetails() {
             type="button"
             id="cart_btn"
             className="btn btn-primary d-inline ms-4"
-            disabled=""
+            disabled={product?.stock === 0}
+            onClick={setItemToCart}
           >
             Add to Cart
           </button>

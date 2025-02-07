@@ -6,14 +6,17 @@ import { Link, useLocation } from "react-router-dom";
 import { setIsAuthenticated, setIsUserLoading, setUser } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { clearCartItem, setCartItem } from "../../redux/features/cartSlice";
 
 const Header = () => {
   useGetMyProfileQuery(); // get the user profile
   const { user, isAuthenticated } = useSelector((state) => state.auth); // get user details
+  const {cartItems} = useSelector(state => state.cart);
   // const navigate = useNavigate();     // for navigation
   const dispatch = useDispatch(); // to change the user details
   const [logout, { data, isError, error, isSuccess }] = useLazyLogoutQuery(); // logout function
   const location = useLocation();  // get the path location
+  
   
 
   useEffect(() => {
@@ -37,6 +40,12 @@ const Header = () => {
   const handleLogout = async () => {
     // logout
     await logout();
+
+    // clear the local storage
+    localStorage.clear();
+
+    // update the cart to be empty
+    dispatch(clearCartItem());
   };
 
   return (
@@ -66,7 +75,7 @@ const Header = () => {
             Cart{" "}
           </span>
           <span className="ms-1" id="cart_count">
-            0
+            {cartItems?.length || 0}
           </span>
         </a>
 
