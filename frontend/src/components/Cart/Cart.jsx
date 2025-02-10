@@ -3,11 +3,18 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setCartItem, removeCartItem } from "../../redux/features/cartSlice";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
+  const checkoutHandler = () => {
+    navigate("/shipping");
+  }
 
   const increseQty = (item, quantity) => {
     const newQty = quantity + 1;
@@ -150,7 +157,7 @@ function Cart() {
                 </span>
             </p>
             <hr />
-            <button id="checkout_btn" className="btn btn-primary w-100">
+            <button id="checkout_btn" className="btn btn-primary w-100"  onClick={checkoutHandler}>
               Check out
             </button>
           </div>

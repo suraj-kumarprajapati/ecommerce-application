@@ -5,7 +5,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-   cartItems : localStorage.getItem("cartItems") ? JSON.parse(localStorage.getItem("cartItems")) :  [],
+    cartItems : localStorage.getItem("cartItems") 
+            ? JSON.parse(localStorage.getItem("cartItems")) 
+            :  [],
+    
+    shippingInfo : localStorage.getItem("shippingInfo") 
+            ? JSON.parse(localStorage.getItem("shippingInfo")) 
+            :  {},
 }
 
 export const cartSlice = createSlice({
@@ -49,14 +55,25 @@ export const cartSlice = createSlice({
             localStorage.setItem("cartItems", JSON.stringify(state?.cartItems));
         },
 
+
+        saveShippingInfo : (state, action) => {
+            const shippingInfo = action.payload;
+
+            state.shippingInfo = shippingInfo;
+
+            localStorage.setItem("shippingInfo", JSON.stringify(state?.shippingInfo));
+        },
+
         clearCartItem : (state, action) => {
             state.cartItems = [];
-        }
+        },
+
+
     }
 })
 
 
 // Action creators are generated for each case reducer function
-export const { setCartItem, removeCartItem, clearCartItem } = cartSlice.actions;
+export const { setCartItem, removeCartItem, clearCartItem, saveShippingInfo } = cartSlice.actions;
 
 export default cartSlice.reducer;
