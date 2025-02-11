@@ -2,6 +2,7 @@ import Metadata from "../layouts/Metadata";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import caluclateOrderCost from "../../helpers/calcBill";
+import CheckoutSteps from "./CheckoutSteps";
 
 const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
@@ -16,6 +17,8 @@ const ConfirmOrder = () => {
     <>
       <Metadata title={"Confirm Order"} />
 
+      <CheckoutSteps  shipping confirmOrder /> 
+
       <div className="row d-flex justify-content-between">
         {/* shipping info  */}
         <div className="col-12 col-lg-8 mt-5 order-confirm">
@@ -29,7 +32,9 @@ const ConfirmOrder = () => {
           <p className="mb-4">
             <b>Address : </b>
             {shippingInfo?.address},{shippingInfo?.city},{" "}
-            {shippingInfo?.zipCode}, {shippingInfo?.country}
+            {shippingInfo?.state}, 
+            {shippingInfo?.zipCode}, 
+            {shippingInfo?.country}
           </p>
 
           <hr />

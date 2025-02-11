@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setCartItem, removeCartItem } from "../../redux/features/cartSlice";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function Cart() {
@@ -86,7 +87,7 @@ function Cart() {
                     />
                   </div>
                   <div className="col-5 col-lg-3">
-                    <a href="/products/product1"> {item?.name} </a>
+                  <Link to={`/products/${item?.product}`} > {item?.name} </Link>                    
                   </div>
                   <div className="col-4 col-lg-2 mt-4 mt-lg-0">
                     <p id="card_item_price">{item?.price}</p>
