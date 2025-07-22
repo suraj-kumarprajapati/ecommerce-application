@@ -12,6 +12,8 @@ export const productApi = createApi({
         baseUrl : "/api/v1"
     }),
 
+    tagTypes : ["Product", "AdminProducts"],
+
     keepUnusedDataFor : 30,
 
     endpoints: (builder) => ({
@@ -33,6 +35,37 @@ export const productApi = createApi({
             query : (id) => ({
                 url : `/products/${id}`,
             }),
+            providesTags : ["Product"],
+        }),
+
+
+        getAdminProducts : builder.query({
+            query : () => ({
+                url : "/admin/products",
+            }),
+            providesTags : ["AdminProducts"],
+        }),
+
+        createProduct : builder.mutation({
+            query(body) {
+                return {
+                    url : "/admin/products",
+                    method : "POST",
+                    body : body,
+                }
+            },
+            invalidatesTags : ["AdminProducts"],
+        }),
+
+        updateProduct : builder.mutation({
+            query({id, body}) {
+                return {
+                    url : `/admin/products/${id}`,
+                    method : "PUT",
+                    body : body,
+                }
+            },
+            invalidatesTags : ["Product", "AdminProducts"]
         }),
 
     }),
@@ -42,4 +75,10 @@ export const productApi = createApi({
 
 
 // export this hook for using in the components
-export const  { useGetProductsQuery, useGetProductDetailsQuery } = productApi;
+export const  { 
+    useGetProductsQuery, 
+    useGetProductDetailsQuery, 
+    useGetAdminProductsQuery, 
+    useCreateProductMutation,
+    useUpdateProductMutation,
+} = productApi;

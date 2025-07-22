@@ -11,13 +11,13 @@ import { clearCartItem, setCartItem } from "../../redux/features/cartSlice";
 const Header = () => {
   useGetMyProfileQuery(); // get the user profile
   const { user, isAuthenticated } = useSelector((state) => state.auth); // get user details
-  const {cartItems} = useSelector(state => state.cart);
+  const { cartItems } = useSelector(state => state.cart);
   // const navigate = useNavigate();     // for navigation
   const dispatch = useDispatch(); // to change the user details
   const [logout, { data, isError, error, isSuccess }] = useLazyLogoutQuery(); // logout function
   const location = useLocation();  // get the path location
-  
-  
+
+
 
   useEffect(() => {
     // if any error occurs
@@ -108,10 +108,13 @@ const Header = () => {
               className="dropdown-menu w-100"
               aria-labelledby="dropDownMenuButton"
             >
-              <Link className="dropdown-item" to="/admin/dashboard">
-                {" "}
-                Dashboard{" "}
-              </Link>
+
+              {user?.role === "admin" && (
+                <Link className="dropdown-item" to="/admin/dashboard">
+                  {" "}
+                  Dashboard{" "}
+                </Link>
+              )}
 
               <Link className="dropdown-item" to="/me/orders">
                 {" "}

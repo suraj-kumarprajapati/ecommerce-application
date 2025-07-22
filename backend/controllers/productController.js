@@ -91,13 +91,24 @@ export const updateProduct = catchAsyncErrors(
             return next(new ErrorHandler("Product not found with given id", 404));
         };
     
-        product = await productModel.findByIdAndUpdate(req.params.id, req.body, {new : true});
+        product = await productModel.findByIdAndUpdate(req.params?.id, req.body, {new : true});
         
         res.status(200).json({
             product,
-        })
+        });
     }
 );
+
+
+
+// Get products - ADMIN : GET  /api/v1/admin/products
+export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await productModel.find();
+
+  res.status(200).json({
+    products,
+  });
+});
 
 
 

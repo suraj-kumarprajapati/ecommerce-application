@@ -148,7 +148,7 @@ function Cart() {
             </p>
             <p>
               Est. total: <span className="order-summary-values">
-                $
+                ₹
                 {cartItems
                       ?.reduce(
                         (acc, item) => acc + item?.quantity * item.price,

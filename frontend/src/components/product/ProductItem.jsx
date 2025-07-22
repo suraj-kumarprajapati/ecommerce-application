@@ -36,7 +36,7 @@ function ProductItem({ product }) {
             {/* Reviews and Ratings End */}
 
             {/* price start  */}
-            <p className="card-text mt-2">{`$${product?.price}`}</p>
+            <p className="card-text mt-2">{`₹${product?.price}`}</p>
             {/* price end  */}
 
             {/* view details button start  */}

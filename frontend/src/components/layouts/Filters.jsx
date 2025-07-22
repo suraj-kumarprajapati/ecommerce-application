@@ -98,7 +98,7 @@ function Filters() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Min ($)"
+                placeholder="Min (₹)"
                 name="min"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
@@ -108,7 +108,7 @@ function Filters() {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Max ($)"
+                placeholder="Max (₹)"
                 name="max"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}

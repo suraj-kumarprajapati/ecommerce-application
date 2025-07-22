@@ -83,19 +83,19 @@ const ConfirmOrder = () => {
             <h4>Order Summary</h4>
             <hr />
             <p>
-              Subtotal: <span className="order-summary-values">$1499.97</span>
+              Subtotal: <span className="order-summary-values">₹1499.97</span>
             </p>
             <p>
-              Shipping: <span className="order-summary-values">$10.00</span>
+              Shipping: <span className="order-summary-values">₹10.00</span>
             </p>
             <p>
-              Tax: <span className="order-summary-values">$150.00</span>
+              Tax: <span className="order-summary-values">₹150.00</span>
             </p>
 
             <hr />
 
             <p>
-              Total: <span className="order-summary-values">$1659.97</span>
+              Total: <span className="order-summary-values">₹1659.97</span>
             </p>
 
             <hr />
