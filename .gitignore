@@ -4,3 +4,6 @@ node_modules/
 
 # ignore environment config files
 *.env
+
+# ignore .vscode settings
+.vscode/

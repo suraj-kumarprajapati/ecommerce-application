@@ -190,7 +190,7 @@ export const getMyOrders = catchAsyncErrors(
 
 
 
-
+// admin routes
 async function getSalesData(startDate, endDate) {
   const salesData = await orderModel.aggregate([
     {

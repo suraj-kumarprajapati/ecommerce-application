@@ -1,3 +1,4 @@
+import Metadata from "../layouts/Metadata";
 import UserLayout from "../layouts/UserLayout";
 import { useSelector } from "react-redux";
 
@@ -6,6 +7,7 @@ const Profile = () => {
 
   return (
     <UserLayout>
+      <Metadata title={"Profile Page"} />
       {/* user information start  */}
       <div className="row justify-content-around mt-5 user-info">
         {/* user profile picture start */}

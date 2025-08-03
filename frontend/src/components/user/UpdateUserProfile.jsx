@@ -4,6 +4,7 @@ import usePutDefaultUpdateUser from "../../hooks/usePutDefaultInUpdateUser.js";
 import useHandleUpdateUserEffects from "../../hooks/useHandleUpdateUserEffects.js";
 import getUpdateUserFormHandler from "../../helpers/getUpdateUserFormHandler.js";
 import UserLayout from "../layouts/UserLayout";
+import Metadata from "../layouts/Metadata.jsx";
 
 const UpdateUserProfile = () => {
   // define states to take input from the user
@@ -29,6 +30,7 @@ const UpdateUserProfile = () => {
   return (
     <>
       <UserLayout>
+        <Metadata title={"Update Profile"} />
         <div className="row wrapper">
           <div className="col-10 col-lg-8">
             <form

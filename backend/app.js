@@ -12,6 +12,7 @@ import productRoutes from "./routes/productRouter.js"
 import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js";
 import reviewRouter from "./routes/reviewRouter.js";
+import paymentRouter from "./routes/paymentRoute.js";
 
 
 // handle uncaught exceptions
@@ -36,7 +37,12 @@ connectDatabase();
 
 
 // middlewares
-app.use(express.json({limit : "2mb"}));  
+app.use(express.json({
+    limit : "10mb",
+    verify : (req, res, buf) => {
+        req.rawBody = buf.toString();
+    },
+}));  
 app.use(express.text());
 app.use(express.query());
 app.use(cookieParser());
@@ -47,6 +53,7 @@ app.use("/api/v1", productRoutes);
 app.use("/api/v1", authRouter);
 app.use("/api/v1", orderRouter);
 app.use("/api/v1", reviewRouter);
+app.use("/api/v1", paymentRouter);
 
 
 // use this middleware after the routes middlewares

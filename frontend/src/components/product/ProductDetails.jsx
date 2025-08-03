@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setCartItem } from "../../redux/features/cartSlice";
+import Metadata from "../layouts/Metadata";
 
 function ProductDetails() {
   // this will handle the active image url
@@ -103,6 +104,7 @@ function ProductDetails() {
 
   return (
     <>
+      <Metadata title={"Product Details"} />
       <div className="row d-flex justify-content-around">
         <div className="col-12 col-lg-5 img-fluid" id="product_image">
           <div className="p-3">
