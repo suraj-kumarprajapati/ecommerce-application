@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { setIsAuthenticated, setIsUserLoading, setUser } from "../../redux/features/userSlice";
 import toast from "react-hot-toast";
 import { useEffect } from "react";
-import { clearCartItem, setCartItem } from "../../redux/features/cartSlice";
+import { clearCart } from "../../redux/features/cartSlice";
 
 const Header = () => {
   useGetMyProfileQuery(); // get the user profile
@@ -45,7 +45,7 @@ const Header = () => {
     localStorage.clear();
 
     // update the cart to be empty
-    dispatch(clearCartItem());
+    dispatch(clearCart());
   };
 
   return (
@@ -57,7 +57,7 @@ const Header = () => {
             <img
               src="/images/shopLogo2.webp"
               alt="ShopCart Logo"
-              className="logoImage"
+              className="logoImage w-20"
             />
           </a>
         </div>

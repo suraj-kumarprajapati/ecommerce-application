@@ -40,8 +40,9 @@ function OrderDetails() {
                 <div className="col-12 col-lg-9 mt-5 order-details">
                     <div className="d-flex justify-content-between align-items-center">
                         <h3 className="mt-5 mb-4">Your Order Details</h3>
-                        <Link className="btn btn-success" to="/invoice/order/order-id">
-                            <i className="fa fa-print"></i> Invoice
+                        <Link className="btn btn-success" to={`/invoice/order/${params?.id}`}>
+                            <i className="fa fa-print"></i> 
+                            Invoice
                         </Link>
                     </div>
                     <table className="table table-striped table-bordered">
@@ -127,7 +128,7 @@ function OrderDetails() {
                                 </div>
 
                                 <div className="col-5 col-lg-5">
-                                    <Link to={`/products/${item?.product}`}>{item?.name}</Link>
+                                    <Link to={`/products/${item?.product?._id}`}>{item?.name}</Link>
                                 </div>
 
                                 <div className="col-4 col-lg-2 mt-4 mt-lg-0">

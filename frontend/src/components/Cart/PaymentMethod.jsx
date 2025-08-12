@@ -10,93 +10,93 @@ import { useNavigate } from "react-router-dom";
 const PaymentMethod = () => {
 
 
-    const [method, setMethod] = useState("");
+  const [method, setMethod] = useState("");
 
-    const {cartItems, shippingInfo} = useSelector(state => state.cart);
-    const { itemsPrice, shippingPrice, taxPrice, totalPrice } = caluclateOrderCost(cartItems);
+  const { cartItems, shippingInfo } = useSelector(state => state.cart);
+  const { itemsPrice, shippingPrice, taxPrice, totalPrice } = caluclateOrderCost(cartItems);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const [createNewOrder, {isSuccess, isError, error, data, isLoading}] = useCreateNewOrderMutation();
-    const [stripeCheckoutSession, {data : checkoutData, error : checkoutError, isLoading : isCheckoutLoading }] = useStripeCheckoutSessionMutation();
-
-
-
-    useEffect(() => {
-        if(checkoutData) {
-          window.location.href = checkoutData.url;
-        }
-
-        if(checkoutError) {
-          toast.error(checkoutError?.data?.message);
-        }
-    }, [checkoutData, navigate, checkoutError]);
+  const [createNewOrder, { isSuccess, isError, error, data, isLoading }] = useCreateNewOrderMutation();
+  const [stripeCheckoutSession, { data: checkoutData, error: checkoutError, isLoading: isCheckoutLoading }] = useStripeCheckoutSessionMutation();
 
 
 
-    useEffect(() => {
-
-        if(isError) {
-            toast.error(error?.data?.message);
-        }
-
-        if(isSuccess) {
-            toast.success("order successfull");
-            console.log(data);
-            navigate("/");
-        }
-
-    }, [isError, error, navigate, isSuccess, data])
-
-
-
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-
-        if(method === "") {
-            toast.error("Please select a payment method");
-            return;
-        }
-
-        if(isLoading) {
-            toast.loading("loading");
-        }
-
-        if(method === "Cash On Delivery") {
-            // cash on delivery
-            alert("Cash On Delivery");
-
-            const orderData = {
-                shippingInfo,
-                orderItems : cartItems,
-                itemsPrice,
-                shippingAmount : shippingPrice,
-                taxAmount : taxPrice,
-                totalAmount : totalPrice, 
-                paymentInfo : "Not Paid",
-                paymentMethod : "Cash On Delivery",
-            }
-
-            createNewOrder(orderData);
-        }
-
-        if(method === "Card") {
-            // card
-            alert("Card");
-
-            const orderData = {
-                shippingInfo,
-                orderItems : cartItems,
-                itemsPrice,
-                shippingAmount : shippingPrice,
-                taxAmount : taxPrice,
-                totalAmount : totalPrice, 
-            };
-
-            stripeCheckoutSession(orderData);
-        }
+  useEffect(() => {
+    if (checkoutData) {
+      window.location.href = checkoutData.url;
     }
+
+    if (checkoutError) {
+      toast.error(checkoutError?.data?.message);
+    }
+  }, [checkoutData, navigate, checkoutError]);
+
+
+
+  useEffect(() => {
+
+    if (isError) {
+      toast.error(error?.data?.message);
+    }
+
+    if (isSuccess) {
+      toast.success("order successfull");
+      console.log(data);
+      navigate("/me/orders?order_success=true");
+    }
+
+  }, [isError, error, navigate, isSuccess, data])
+
+
+
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (method === "") {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    if (isLoading) {
+      toast.loading("loading");
+    }
+
+    if (method === "Cash On Delivery") {
+      // cash on delivery
+      alert("Cash On Delivery");
+
+      const orderData = {
+        shippingInfo,
+        orderItems: cartItems,
+        itemsPrice,
+        shippingAmount: shippingPrice,
+        taxAmount: taxPrice,
+        totalAmount: totalPrice,
+        paymentInfo: "Not Paid",
+        paymentMethod: "Cash On Delivery",
+      }
+
+      createNewOrder(orderData);
+    }
+
+    if (method === "Card") {
+      // card
+      alert("Card");
+
+      const orderData = {
+        shippingInfo,
+        orderItems: cartItems,
+        itemsPrice,
+        shippingAmount: shippingPrice,
+        taxAmount: taxPrice,
+        totalAmount: totalPrice,
+      };
+
+      stripeCheckoutSession(orderData);
+    }
+  }
 
   return (
     <>

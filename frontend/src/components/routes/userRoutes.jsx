@@ -19,7 +19,7 @@ import ConfirmOrder from "../Cart/ConfirmOrder";
 import PaymentMethod from "../Cart/PaymentMethod";
 import MyOrder from "../order/MyOrder";
 import OrderDetails from "../order/OrderDetails";
-import Invoice from "../order/Invoice";
+import Invoice from "../Invoice/Invoice";
 
 
 export const userRoutes = () => {

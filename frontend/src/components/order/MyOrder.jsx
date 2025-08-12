@@ -3,13 +3,33 @@ import { useMyOrdersQuery } from "../../redux/api/orderApi";
 import toast from "react-hot-toast";
 import Loader from "../layouts/Loader";
 import { MDBDataTable } from "mdbreact";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Metadata from "../layouts/Metadata";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../redux/features/cartSlice";
 
 
 function MyOrder() {
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { data, error, isLoading } = useMyOrdersQuery();
+    const [searchParams] = useSearchParams();
+    const orderSuccess = searchParams.get("order_success");
+
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error?.data?.message);
+        }
+
+        if(orderSuccess) {
+            dispatch(clearCart());
+            navigate("/me/orders");
+        }
+    }, [error, orderSuccess, dispatch, navigate]);
+
+    if (isLoading) return <Loader />;
 
     const setOrders = () => {
         const orders = {
@@ -74,14 +94,10 @@ function MyOrder() {
 
 
 
-    useEffect(() => {
-        if (error) {
-            toast.error(error?.data?.message);
-        }
-    }, [error]);
+    
 
 
-    if (isLoading) return <Loader />;
+    
 
     return (
         <div>
@@ -97,6 +113,8 @@ function MyOrder() {
                 bordered
                 striped
                 hover
+                entries={20}
+                entriesOptions={[5, 10, 20, 50]}
             />
 
         </div>
