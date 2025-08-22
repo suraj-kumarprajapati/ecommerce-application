@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { MDBDataTable } from "mdbreact";
 import { Link } from "react-router-dom";
-import MetaData from "../layouts/MetaData";
 import {
   useGetAdminProductsQuery,
 } from "../../redux/api/productApi";
 import AdminLayout from "../layouts/AdminLayout";
 import Loader from "../layouts/Loader";
+import Metadata from "../layouts/Metadata";
 
 const ListProducts = () => {
   const { data : productsData, isLoading : AreProductsLoading, error : isFetchError } = useGetAdminProductsQuery();
@@ -106,7 +106,7 @@ const ListProducts = () => {
 
   return (
     <AdminLayout>
-      <MetaData title={"All Products"} />
+      <Metadata title={"All Products"} />
 
       <h1 className="my-5">{productsData?.products?.length} Products</h1>
 
