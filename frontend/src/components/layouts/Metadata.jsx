@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 
 
-function  Metadata({title})  {
+function Metadata({title})  {
   return (
     <Helmet>
         <title> {`ShopCart -  ${title}` } </title>

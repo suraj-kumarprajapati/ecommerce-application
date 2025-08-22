@@ -7,8 +7,7 @@ import { useEffect, useState } from "react";
 import { useLazyGetDashboardSalesQuery } from "../../redux/api/orderApi";
 import toast from 'react-hot-toast';
 import Loader from "../layouts/Loader";
-import MetaData from "../layouts/MetaData";
-
+import Metadata from "../layouts/Metadata";
 
 const Dashboard = () => {
 
@@ -53,7 +52,7 @@ const Dashboard = () => {
         <>
             <AdminLayout >
 
-                <MetaData title={"Admin Products"} />
+                <Metadata title={"Admin Products"} />
                 <div className="d-flex justify-content-start align-items-center">
                     <div className="mb-3 me-4">
                         <label className="form-label d-block">Start Date</label>
