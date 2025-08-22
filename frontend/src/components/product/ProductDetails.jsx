@@ -4,9 +4,12 @@ import StarRatings from "react-star-ratings";
 import Loader from "../layouts/Loader";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartItem } from "../../redux/features/cartSlice";
 import Metadata from "../layouts/Metadata";
+import NewReveiw from "../reviews/NewReveiw";
+import ListReviews from "../reviews/ListReviews";
+import NotFound from "../layouts/NotFound";
 
 function ProductDetails() {
   // this will handle the active image url
@@ -25,12 +28,8 @@ function ProductDetails() {
 
   let product = data?.product;
 
-  // useEffect(() => {
-  //   product = data?.product;
-  // }, [data])
-  
-  // console.log(product);
-  // fetch product data end
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
 
   // set the activeImageUrl
   useEffect(() => {
@@ -44,6 +43,10 @@ function ProductDetails() {
       toast.error(error?.data?.message);
     }
   }, [isError, error]);
+
+  if(error && error?.status == 404) {
+    return <NotFound />
+  }
 
   // if product is still loading
   if (isLoading) {
@@ -78,9 +81,9 @@ function ProductDetails() {
 
 
   // if product not found
-  if(!product) {
+  if (!product) {
     return (
-        <h1>Product Not Found</h1>
+      <h1>Product Not Found</h1>
     )
   }
 
@@ -89,12 +92,12 @@ function ProductDetails() {
   const setItemToCart = () => {
     // create the cart item
     const cartItem = {
-      product : product?._id,
-      name : product?.name,
-      price : product?.price,
-      image : product?.images[0]?.url,
-      stock : product?.stock,
-      quantity : quantity,
+      product: product?._id,
+      name: product?.name,
+      price: product?.price,
+      image: product?.images[0]?.url,
+      stock: product?.stock,
+      quantity: quantity,
     }
 
     // dispatch set cart method
@@ -105,7 +108,7 @@ function ProductDetails() {
   return (
     <>
       <Metadata title={"Product Details"} />
-      <div className="row d-flex justify-content-around">
+      <div className="row d-flex justify-content-around mb-4">
         <div className="col-12 col-lg-5 img-fluid" id="product_image">
           <div className="p-3">
             <img
@@ -121,9 +124,8 @@ function ProductDetails() {
               <div className="col-2 ms-4 mt-2" key={index}>
                 <a role="button">
                   <img
-                    className={`d-block border rounded p-3 cursor-pointer ${
-                      image.url === activeImageUrl ? "border-warning" : ""
-                    }`}
+                    className={`d-block border rounded p-3 cursor-pointer ${image.url === activeImageUrl ? "border-warning" : ""
+                      }`}
                     height="100"
                     width="100"
                     src={image?.url}
@@ -164,9 +166,9 @@ function ProductDetails() {
           {/* product price start  */}
           <p id="product_price">{`₹${product?.price}`}</p>
           <div className="stockCounter d-inline">
-            <span 
+            <span
               className="btn btn-danger minus"
-              onClick={ decrementQuantity }
+              onClick={decrementQuantity}
             >
               -
             </span>
@@ -176,9 +178,9 @@ function ProductDetails() {
               value={quantity}
               readOnly
             />
-            <span 
+            <span
               className="btn btn-primary plus"
-              onClick={ incrementQuantity }
+              onClick={incrementQuantity}
             >
               +
             </span>
@@ -223,14 +225,28 @@ function ProductDetails() {
           <p id="product_seller mb-3">
             Sold by : <strong>{product?.seller}</strong>
           </p>
-          
+
           {/* product description end  */}
 
-          <div className="alert alert-danger my-5" type="alert">
-            Login to post your review.
-          </div>
+
+          {/* review section  */}
+          {
+            isAuthenticated ? (
+              <NewReveiw  productId={product._id} />
+            ) : (
+              <div className="alert alert-danger my-5" type="alert">
+                Login to post your review.
+              </div>
+            )}
         </div>
-      </div>
+
+        
+      </div >
+        
+        {/* reviews  */}
+      {product?.reviews?.length > 0 && (
+        <ListReviews reviews={product?.reviews} />
+      )}
     </>
   );
 }

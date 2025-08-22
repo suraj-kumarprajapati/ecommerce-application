@@ -2,9 +2,12 @@
 // import dependencies
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+import path from "path";
 import {connectDatabase} from "./config/dbConnect.js"
 import errorMiddleware from "./middlewares/error.js";
 import cookieParser from "cookie-parser";
+
 
 
 // import all routes
@@ -13,6 +16,7 @@ import authRouter from "./routes/authRouter.js";
 import orderRouter from "./routes/orderRouter.js";
 import reviewRouter from "./routes/reviewRouter.js";
 import paymentRouter from "./routes/paymentRoute.js";
+import { fileURLToPath } from "url";
 
 
 // handle uncaught exceptions
@@ -23,12 +27,11 @@ process.on("uncaughtException", (err) => {
 });
 
 
-// configuration
-dotenv.config({path : "backend/config/config.env"});
+
 const PORT = process.env.PORT;
-const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = process.env.NODE_ENV; 
 
-
+ 
 
 const app = express(); 
 
@@ -54,6 +57,18 @@ app.use("/api/v1", authRouter);
 app.use("/api/v1", orderRouter);
 app.use("/api/v1", reviewRouter);
 app.use("/api/v1", paymentRouter);
+
+
+// serve frontend as static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if(process.env.NODE_ENV === "PRODUCTION") {
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
+    });
+}
 
 
 // use this middleware after the routes middlewares

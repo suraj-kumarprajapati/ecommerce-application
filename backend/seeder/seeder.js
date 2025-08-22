@@ -2,11 +2,19 @@
 import mongoose from 'mongoose';
 import products from './data.js';
 import productModel from '../models/productModel.js';
+import dotenv from "dotenv";
+
+
+// configuration
+dotenv.config({path : "backend/config/config.env"});
 
 
 const seedProducts = async () => {
+    
+    const DB_URI = process.env.DB_URI;
+
     try {
-        mongoose.connect("mongodb://localhost:27017/udemyECommerce");
+        mongoose.connect(DB_URI);
 
         await productModel.deleteMany();
         console.log("All existing products deleted");

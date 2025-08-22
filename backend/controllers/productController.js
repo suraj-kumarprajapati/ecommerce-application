@@ -62,14 +62,7 @@ export const getProductDetails = catchAsyncErrors(
 
     async (req, res, next) => {
 
-        // log the current user
-        console.log(req.user)
-
-        // if user is found, do something
-
-
-
-        const product = await productModel.findById(req?.params?.id);
+        const product = await productModel.findById(req?.params?.id).populate("reviews.user");
 
         if(!product) {
             return next(new ErrorHandler("Product not found with given id", 404));

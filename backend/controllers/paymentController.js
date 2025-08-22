@@ -1,12 +1,15 @@
 import catchAsyncErrors from "../middlewares/catchAsyncError.js";
 import Stripe from "stripe";
 import orderModel from "../models/orderModel.js";
+import 'dotenv/config'
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
+
+
 // create stripe payment checkout session => /api/v1/payment/checkout_session
 export const stripeCheckoutSession = catchAsyncErrors(
-  async (req, res, next) => {
+  async (req, res, next) => { 
     const body = req.body;
 
     // items details
