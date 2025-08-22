@@ -2,7 +2,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import Metadata from "../layouts/MetaData";
+import Metadata from "../layouts/Metadata";
 import AdminLayout from "../layouts/AdminLayout";
 import { useGetProductDetailsQuery, useUpdateProductMutation } from "../../redux/api/productApi";
 import { PRODUCT_CATEGORIES } from "../../constants/constant";
